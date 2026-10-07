@@ -1,8 +1,6 @@
 package se.iths.vincent.webshop.model;
 
 import se.iths.vincent.webshop.ProductStorage;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Files;
@@ -12,17 +10,15 @@ import java.util.List;
 
 public class ProductFileStorage implements ProductStorage {
 
-    private Path path = Path.of("products.txt");
+    private final Path path = Path.of("products.txt");
 
 
     public void saveProduct(Product product) {
-        if (Files.exists(path)) {
-            try {
-                Files.writeString(path, product.toFileLine(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-            }
-            catch (IOException exception) {
-                IO.println("Could not write to file: " + exception.getMessage());
-            }
+        try {
+            Files.writeString(path, product.toFileLine() + System.lineSeparator(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        }
+        catch (IOException exception) {
+            IO.println("Could not write to file: " + exception.getMessage());
         }
     }
 
