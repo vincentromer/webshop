@@ -50,4 +50,15 @@ public class Product {
         return articleNumber + ";" + title + ";" + price + ";" + description;
     }
 
+    public static Product fromFileLine(String line) {
+        // Split up the file line in an array and then create a new product with the values
+        String[] fields = line.split(";");
+        String articleNumber = fields[0];
+        String title = fields[1];
+        double price = Double.parseDouble(fields[2]);
+        String description = fields[3];
+        Product product = new Product(articleNumber, title, price, description);
+        return product;
+    }
+
 }
