@@ -20,15 +20,15 @@ public class WebShopManager {
         this.outInputHandler = outInputHandler;
     }
 
-    public void saveProductToStorage(Product product) {
+    void saveProductToStorage(Product product) {
         productStorage.saveProduct(product);
     }
 
-    public List<Product> getProductsFromStorage() {
+    List<Product> getProductsFromStorage() {
         return productStorage.getProducts();
     }
 
-    public Product getProductFromStorage(String articleNumber) {
+    Product getProductFromStorage(String articleNumber) {
         return productStorage.getProduct(articleNumber);
     }
 
@@ -48,6 +48,7 @@ public class WebShopManager {
 
         while (!quit) {
             String choice = outInputHandler.menu();
+            if (choice == null) continue;
             switch (choice) {
                 case "1":
                     String articleNumber = outInputHandler.prompt("Enter article number: ");
@@ -62,6 +63,10 @@ public class WebShopManager {
                     break;
                 case "2":
                     List<Product> products = getProductsFromStorage();
+                    outInputHandler.info("""
+                            Here is a list of products:
+                            (If nothing shows up there are no products saved)
+                            """);
                     for (Product p : products) {
                         outInputHandler.info(getProductInfo(p, discount));
                     }
@@ -96,7 +101,6 @@ public class WebShopManager {
     }
 
     private String getProductInfo(Product product, Discount discount) {
-
         String info = """
                 [%1$s]
                 Description: %2$s
@@ -106,10 +110,5 @@ public class WebShopManager {
                 """;
         return info.formatted(product.getTitle(), product.getDescription(),
                 product.getPrice(), discount.calculatePrice(product.getPrice()), product.getArticleNumber());
-//        return "[" + product.getTitle() + "]\n" +
-//                "Description: " + product.getDescription() + "\n" +
-//                "Price: " + product.getPrice() + "\n" +
-//                "Discounted price: " + discount.calculatePrice(product.getPrice()) + "\n" +
-//                "Article number: " + product.getArticleNumber();
     }
 }
