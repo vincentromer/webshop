@@ -5,14 +5,19 @@ import se.iths.vincent.webshop.model.HalfPriceDiscount;
 import se.iths.vincent.webshop.model.Product;
 import se.iths.vincent.webshop.model.TenPercentDiscount;
 
+import javax.swing.*;
 import java.util.List;
 
 public class WebShopManager {
 
     private ProductStorage productStorage;
 
-    public WebShopManager(ProductStorage productStorage) {
+    private OutInputHandler outInputHandler;
+
+
+    public WebShopManager(ProductStorage productStorage, OutInputHandler outInputHandler) {
         this.productStorage = productStorage;
+        this.outInputHandler = outInputHandler;
     }
 
     public void saveProductToStorage(Product product) {
@@ -29,7 +34,7 @@ public class WebShopManager {
 
     public void startWebShop() {
         Discount discount = null;
-        String input = IO.readln("Enter a discount code: ");
+        String input = outInputHandler.prompt("Enter discount code: ");
 
         if (input.equalsIgnoreCase("halfprice")) {
             discount = new HalfPriceDiscount("Half off all products.");
@@ -38,45 +43,43 @@ public class WebShopManager {
             discount = new TenPercentDiscount("Ten percent off all products.");
         }
 
+
         boolean quit = false;
 
         while (!quit) {
-            printMenu("1. Add a product", "2. List all products",
-                    "3. Show information about a product", "4. Exit program");
-            String choice = IO.readln("Choice: ");
+            String choice = outInputHandler.menu();
             switch (choice) {
                 case "1":
-                    String articleNumber = IO.readln("Enter article number: ");
-                    String title = IO.readln("Enter title: ");
+                    String articleNumber = outInputHandler.prompt("Enter article number: ");
+                    String title = outInputHandler.prompt("Enter title: ");
                     // Converts input to a double
-                    double price = Double.parseDouble(IO.readln("Enter price: "));
-                    String description = IO.readln("Enter description: ");
+                    double price = Double.parseDouble(outInputHandler.prompt("Enter price: "));
+                    String description = outInputHandler.prompt("Enter description: ");
 
                     Product product = new Product(articleNumber, title, price, description);
                     saveProductToStorage(product);
-                    IO.println("Added product to shop.");
+                    outInputHandler.info("Added product to shop.");
                     break;
                 case "2":
                     List<Product> products = getProductsFromStorage();
                     for (Product p : products) {
-                        printProductInfo(p, discount);
-                        IO.println();
+                        outInputHandler.info(getProductInfo(p, discount));
                     }
                     break;
                 case "3":
                     // Information about a product
-                    String query = IO.readln("Enter article number: ");
+                    String query = outInputHandler.prompt("Enter article number: ");
                     Product foundProduct = getProductFromStorage(query);
                     if (foundProduct != null) {
-                        printProductInfo(foundProduct, discount);
+                        outInputHandler.info(getProductInfo(foundProduct, discount));
                     }
                     else {
-                        IO.println("Could not find product with article number " + query);
+                        outInputHandler.info("Could not find product with article number " + query);
                     }
                     break;
                 case "4":
                     quit = true;
-                    IO.println("Quitting program...");
+                    outInputHandler.info("Quitting program...");
                     // Exit program
                     break;
                 default:
@@ -92,17 +95,21 @@ public class WebShopManager {
 
     }
 
-    private void printMenu(String... menuItems) {
-        for (String item : menuItems) {
-            IO.println(item);
-        }
-    }
+    private String getProductInfo(Product product, Discount discount) {
 
-    private void printProductInfo(Product product, Discount discount) {
-        IO.println("[" + product.getTitle() + "]");
-        IO.println(("Description: " + product.getDescription()));
-        IO.println(("Price: " + product.getPrice()));
-        IO.println("Discounted price: " + discount.calculatePrice(product.getPrice()));
-        IO.println("Article number: " + product.getArticleNumber());
+        String info = """
+                [%1$s]
+                Description: %2$s
+                Price: %3$s
+                Discounted price: %4$s
+                Article number: %5$s
+                """;
+        return info.formatted(product.getTitle(), product.getDescription(),
+                product.getPrice(), discount.calculatePrice(product.getPrice()), product.getArticleNumber());
+//        return "[" + product.getTitle() + "]\n" +
+//                "Description: " + product.getDescription() + "\n" +
+//                "Price: " + product.getPrice() + "\n" +
+//                "Discounted price: " + discount.calculatePrice(product.getPrice()) + "\n" +
+//                "Article number: " + product.getArticleNumber();
     }
 }
