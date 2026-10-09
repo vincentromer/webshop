@@ -8,6 +8,10 @@ public abstract class Discount {
         this.description = description;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public abstract double calculatePrice(double originalPrice);
 
 
