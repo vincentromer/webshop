@@ -17,7 +17,7 @@ public class SwingOutInputHandler implements OutInputHandler {
         String choice = JOptionPane.showInputDialog("""
                 1. Add a product
                 2. List all products
-                3. Show information about a product
+                3. View information about a product
                 4. Quit program""");
         return choice;
     }
