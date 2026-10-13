@@ -43,12 +43,11 @@ public class WebShopManager {
             discount = new TenPercentDiscount("Ten percent off all products.");
         }
 
-
         boolean quit = false;
 
         while (!quit) {
             String choice = outInputHandler.menu();
-            if (choice == null) continue;
+            if (choice == null) continue; // Ask again if the choice is null
             switch (choice) {
                 case "1":
                     String articleNumber = outInputHandler.prompt("Enter article number: ");
@@ -63,12 +62,15 @@ public class WebShopManager {
                     break;
                 case "2":
                     List<Product> products = getProductsFromStorage();
-                    outInputHandler.info("""
-                            Here is a list of products:
-                            (If nothing shows up there are no products saved)
-                            """);
-                    for (Product p : products) {
-                        outInputHandler.info(getProductInfo(p, discount));
+                    if (products.isEmpty()) {
+                        outInputHandler.info("No products saved.");
+                    }
+                    else {
+                        outInputHandler.info("List of products:");
+                        for (Product p : products) {
+                            outInputHandler.info(getProductInfo(p, discount));
+                        }
+
                     }
                     break;
                 case "3":

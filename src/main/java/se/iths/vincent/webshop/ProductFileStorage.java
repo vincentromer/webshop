@@ -1,6 +1,7 @@
-package se.iths.vincent.webshop.model;
+package se.iths.vincent.webshop;
 
-import se.iths.vincent.webshop.ProductStorage;
+import se.iths.vincent.webshop.model.Product;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Files;
