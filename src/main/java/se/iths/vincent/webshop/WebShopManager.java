@@ -50,17 +50,19 @@ public class WebShopManager {
             if (choice == null) continue; // Ask again if the choice is null
             switch (choice) {
                 case "1":
+                    // Create a product
                     String articleNumber = outInputHandler.prompt("Enter article number: ");
                     String title = outInputHandler.prompt("Enter title: ");
-                    // Converts input to a double
                     double price = Double.parseDouble(outInputHandler.prompt("Enter price: "));
                     String description = outInputHandler.prompt("Enter description: ");
-
                     Product product = new Product(articleNumber, title, price, description);
+
                     saveProductToStorage(product);
+
                     outInputHandler.info("Added product to shop.");
                     break;
                 case "2":
+                    // Get the list of products
                     List<Product> products = getProductsFromStorage();
                     if (products.isEmpty()) {
                         outInputHandler.info("No products saved.");
@@ -70,7 +72,6 @@ public class WebShopManager {
                         for (Product p : products) {
                             outInputHandler.info(getProductInfo(p, discount));
                         }
-
                     }
                     break;
                 case "3":
@@ -85,9 +86,9 @@ public class WebShopManager {
                     }
                     break;
                 case "4":
+                    // Quit the program
                     quit = true;
                     outInputHandler.info("Quitting program...");
-                    // Exit program
                     break;
                 default:
                     // Invalid choice
