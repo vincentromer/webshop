@@ -73,6 +73,7 @@ public class WebShopManager {
                             outInputHandler.info(getProductInfo(p, discount));
                         }
                     }
+
                     break;
                 case "3":
                     // Information about a product

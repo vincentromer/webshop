@@ -1,21 +1,30 @@
 package se.iths.vincent.webshop;
 
-
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.iths.vincent.webshop.model.Product;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WebShopManagerTest {
 
+    ProductStorage storage;
+    WebShopManager webShopManager;
+    Product productOne, productTwo;
+
+    @BeforeEach
+    public void arrange() {
+        // We do not have to initialize a new storage and webbshop manager in every method by using BeforeEach
+        // Less duplicated code
+        storage = new ProductListStorage();
+        webShopManager = new WebShopManager(storage, null);
+
+        productOne = new Product("1111", "TestProductOne", 100, "A test product");
+        productTwo = new Product("2222", "TestProductTwo", 200, "Another test product");
+    }
+
     @Test
     public void testSaveProductToStorage() {
-        //Arrange
-        ProductStorage storage = new ProductListStorage();
-        WebShopManager webShopManager = new WebShopManager(storage, null);
-        Product productOne = new Product("1111", "TestProductOne", 100, "A test product");
-        Product productTwo = new Product("2222", "TestProductTwo", 200, "Another test product");
-
         //Act
         webShopManager.saveProductToStorage(productOne);
         webShopManager.saveProductToStorage(productTwo);
@@ -26,14 +35,21 @@ public class WebShopManagerTest {
     }
 
     @Test
-    public void testGetProductFromStorage() {
-        //Arrange
-        ProductStorage storage = new ProductListStorage();
-        WebShopManager webShopManager = new WebShopManager(storage, null);
-        Product product = new Product("1111", "TestProduct", 100, "Test product");
-
+    public void testGetProductsFromStorage() {
         //Act
-        webShopManager.saveProductToStorage(product);
+        webShopManager.saveProductToStorage(productOne);
+        webShopManager.saveProductToStorage(productTwo);
+        List<Product> productList = webShopManager.getProductsFromStorage();
+        List<Product> testProductList = List.of(new Product[]{productOne, productTwo});
+
+        //Assert
+        assertEquals(testProductList, productList);
+    }
+
+    @Test
+    public void testGetProductFromStorage() {
+        //Act
+        webShopManager.saveProductToStorage(productOne);
         Product retrievedProduct = webShopManager.getProductFromStorage("1111");
 
         //Assert
@@ -42,10 +58,6 @@ public class WebShopManagerTest {
 
     @Test
     public void testNullGetProductFromStorage() {
-        //Arrange
-        ProductStorage storage = new ProductListStorage();
-        WebShopManager webShopManager = new WebShopManager(storage, null);
-
         //Act
         Product product = webShopManager.getProductFromStorage("7777");
 
