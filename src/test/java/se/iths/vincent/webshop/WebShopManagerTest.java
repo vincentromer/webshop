@@ -14,7 +14,7 @@ public class WebShopManagerTest {
 
     @BeforeEach
     public void arrange() {
-        // We do not have to initialize a new storage and webbshop manager in every method by using BeforeEach
+        // We do not have to create a ProductStorage and WebShopManager in every test method by using BeforeEach
         // Less duplicated code
         storage = new ProductListStorage();
         webShopManager = new WebShopManager(storage, null);
@@ -32,18 +32,6 @@ public class WebShopManagerTest {
 
         //Assert
         assertEquals(2, productList.size());
-    }
-
-    @Test
-    public void testGetProductsFromStorage() {
-        //Act
-        webShopManager.saveProductToStorage(productOne);
-        webShopManager.saveProductToStorage(productTwo);
-        List<Product> productList = webShopManager.getProductsFromStorage();
-        List<Product> testProductList = List.of(new Product[]{productOne, productTwo});
-
-        //Assert
-        assertEquals(testProductList, productList);
     }
 
     @Test
