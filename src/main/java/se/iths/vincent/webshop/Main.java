@@ -3,7 +3,7 @@ package se.iths.vincent.webshop;
 public class Main {
     public static void main(String[] args) {
         ProductStorage storage = new ProductFileStorage();
-        OutInputHandler outInputHandler = new ConsoleOutInputHandler();
+        OutInputHandler outInputHandler = new SwingOutInputHandler();
         WebShopManager webShopManager = new WebShopManager(storage, outInputHandler);
         webShopManager.startWebShop();
     }
