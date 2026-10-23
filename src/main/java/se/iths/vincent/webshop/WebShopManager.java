@@ -43,6 +43,8 @@ public class WebShopManager {
             discount = new TenPercentDiscount("Ten percent off all products.");
         }
 
+        outInputHandler.info("Discount applied: \n" + discount.getDescription());
+
         boolean quit = false;
 
         while (!quit) {
@@ -53,7 +55,8 @@ public class WebShopManager {
                     // Create a product
                     String articleNumber = outInputHandler.prompt("Enter article number: ");
                     String title = outInputHandler.prompt("Enter title: ");
-                    double price = Double.parseDouble(outInputHandler.prompt("Enter price: "));
+                    //double price = Double.parseDouble(outInputHandler.prompt("Enter price: "));
+                    double price = validatePriceInput(outInputHandler.prompt("Enter price: "));
                     String description = outInputHandler.prompt("Enter description: ");
                     Product product = new Product(articleNumber, title, price, description);
 
@@ -102,6 +105,19 @@ public class WebShopManager {
 
 
 
+    }
+
+    private double validatePriceInput(String input) {
+        while (true) {
+            try {
+                double convertedInput = Double.parseDouble(input);
+                return convertedInput;
+            }
+            catch (NumberFormatException exception) {
+                outInputHandler.info("Invalid input. Please enter a number.");
+                input = outInputHandler.prompt("Enter price: ");
+            }
+        }
     }
 
     private String getProductInfo(Product product, Discount discount) {
