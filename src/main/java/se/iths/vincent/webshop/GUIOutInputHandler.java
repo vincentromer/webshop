@@ -2,7 +2,7 @@ package se.iths.vincent.webshop;
 
 import javax.swing.JOptionPane;
 
-public class SwingOutInputHandler implements OutInputHandler {
+public class GUIOutInputHandler implements OutInputHandler {
 
     public String prompt(String message) {
         String input = JOptionPane.showInputDialog(JOptionPane.getRootFrame(), message, "Input", JOptionPane.QUESTION_MESSAGE);

@@ -5,7 +5,6 @@ import se.iths.vincent.webshop.model.HalfPriceDiscount;
 import se.iths.vincent.webshop.model.Product;
 import se.iths.vincent.webshop.model.TenPercentDiscount;
 
-import javax.swing.*;
 import java.util.List;
 
 public class WebShopManager {

@@ -2,7 +2,6 @@ package se.iths.vincent.webshop;
 
 public class ConsoleOutInputHandler implements OutInputHandler {
 
-
     public String prompt(String message) {
         String input = IO.readln(message);
         return input;
@@ -11,7 +10,6 @@ public class ConsoleOutInputHandler implements OutInputHandler {
     public void info(String message) {
         IO.println(message);
     }
-
 
     public String menu() {
         String choice = IO.readln("""
